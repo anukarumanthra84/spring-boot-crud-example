@@ -37,13 +37,29 @@ public class ProductService {
         return "product removed !! " + id;
     }
 
-    public Product updateProduct(Product product) {
-        Product existingProduct = repository.findById(product.getId()).orElse(null);
+    public Product patchProduct(int id,Product product) {
+        Product existingProduct = repository.findById(id).orElse(null);
+
+        if (product.getName()!=null){
+        existingProduct.setName(product.getName());}
+        if (product.getQuantity()!=0){
+        existingProduct.setQuantity(product.getQuantity());}
+        if (product.getPrice()!=0){
+        existingProduct.setPrice(product.getPrice());}
+        return repository.save(existingProduct);
+    }
+
+    public Product updateProduct(int id,Product product) {
+        Product existingProduct = repository.findById(id).orElse(null);
+        if(existingProduct==null){
+            throw new RuntimeException("Product not found");
+        }
         existingProduct.setName(product.getName());
         existingProduct.setQuantity(product.getQuantity());
         existingProduct.setPrice(product.getPrice());
         return repository.save(existingProduct);
     }
+
 
 
 }
